@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": "src", // import を絶対パスにする
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -17,9 +14,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "strictNullChecks": true, // nullやundefinedが「一人前の型」になる。
+    "noImplicitAny": true, // 暗黙のany型を禁止する。
+    "noImplicitThis": true, // thisに型を指定していない場合にエラーを発生させる。
+    "noImplicitReturns": true, // 関数内のすべての経路で、返り値の型があっているかをチェックする。
+    "noUnusedLocals": true, // 宣言して、一度も使われないローカル変数があると、コンパイルエラーになる。
+    "noUnusedParameters": true // 一度も使われないパラメータがあると、コンパイルエラーになる。
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
