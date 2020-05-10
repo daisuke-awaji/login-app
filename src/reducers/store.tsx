@@ -1,8 +1,8 @@
 import { createStore } from 'redux'
 import { combineReducers } from 'redux'
-import authenticateReducer from './authenticate'
+import authenticatedUser from './authenticate'
 
 const reducer = combineReducers({
-  isAuthenticated: authenticateReducer,
+  authenticatedUser,
 })
 export default createStore(reducer)

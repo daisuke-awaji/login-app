@@ -10,7 +10,7 @@ export const UserInfo = () => {
   const one = users.find((user) => user.id === Number(id))
   return (
     <div>
-      <h1>Hello {one?.name}</h1>
+      <h1>{one?.name}</h1>
       <h3>Email: {one?.email}</h3>
     </div>
   )

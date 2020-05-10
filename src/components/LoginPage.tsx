@@ -5,14 +5,15 @@ import { Visibility, VisibilityOff, MailOutline } from '@material-ui/icons'
 import { toClicable } from './toClicable'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { AUTHENTICATE } from 'reducers/authenticate'
+import { login as loginApi } from 'apis/auth'
+import { setUser } from 'reducers/authenticate'
 
 type Inputs = {
   email: string
   password: string
 }
 
-function LoginPage() {
+export function LoginPage() {
   const { handleSubmit, control, errors, setError } = useForm<Inputs>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -23,7 +24,7 @@ function LoginPage() {
     from: { pathname: '/' },
   }
   const dispatch = useDispatch()
-  const login = (data: Inputs) => {
+  const login = async (data: Inputs) => {
     // TODO: 認証APIを実行する
     const valid = (data: Inputs) => {
       const { email, password } = data
@@ -42,8 +43,9 @@ function LoginPage() {
       }
       return true
     }
+    const user = await loginApi(data)
     if (valid(data)) {
-      dispatch({ type: AUTHENTICATE })
+      dispatch(setUser(user))
       history.replace(from)
     }
   }
@@ -120,5 +122,3 @@ function LoginPage() {
     </form>
   )
 }
-
-export default LoginPage
