@@ -11,3 +11,7 @@ Gatsby
 SEO が必要ないかそれほど重要ではなく、SPA で問題ないなら CreateReactApp をベースにして React 開発を行いましょう ß。
 
 https://crudzoo.com/blog/react-start
+
+# create-react-app を使用するか、純粋に手作業で関連ライブラリをインストールするか
+
+create-react-app を使用しても `npm run eject`コマンドで、関連ライブラリを手作業で１つ１つインストールした状態にすることができる。こまかく設定をいじりたくなったら、`eject`すれば OK。ということで create-react-app を使う

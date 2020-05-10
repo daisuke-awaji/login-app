@@ -1,11 +1,50 @@
 import React from 'react'
-import { Button, TextField } from '@material-ui/core'
+import { Button, TextField, Checkbox } from '@material-ui/core'
 import { useForm, Controller } from 'react-hook-form'
 
 type Inputs = {
   email: string
   firstName: string
   lastName: string
+}
+
+interface IBaseDesignedFormProps {
+  name: string
+  label: string
+  helperText?: string
+  defaultValue?: unknown
+  rules: any
+  errors: any
+  control: any
+}
+function BaseDesignedForm(props: IBaseDesignedFormProps) {
+  const {
+    name,
+    label,
+    helperText,
+    defaultValue,
+    rules,
+    errors,
+    control,
+  } = props
+
+  return (
+    <Controller
+      as={
+        <TextField
+          label={label}
+          error={!!errors[name]}
+          variant="outlined"
+          margin="dense"
+          helperText={errors[name]?.message || helperText}
+        />
+      }
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      rules={rules}
+    />
+  )
 }
 
 function MaterialUiForm() {
@@ -19,40 +58,43 @@ function MaterialUiForm() {
     // サーバサイドエラーを判断してエラーを表示する
     setError('firstName', 'alreadyExist', 'すでに登録されているユーザです。')
     setError('lastName', 'alreadyExist', 'すでに登録されているユーザです。')
+    setError(
+      'lastName',
+      'longMessage',
+      'ものすごく長いエラーメッセージのサンプルです。フォームのレイアウトが崩れないことを確認しましょう。',
+    )
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h3>氏名</h3>
-      <Controller
-        as={
-          <TextField
-            label="姓"
-            error={!!errors?.firstName}
-            variant="outlined"
-            margin="dense"
-            helperText={errors?.firstName?.message || '10文字以内'}
-          />
-        }
+      <BaseDesignedForm
         name="firstName"
-        control={control}
-        defaultValue=""
+        label="姓"
+        helperText="10文字以内"
         rules={{ required: '必須です。' }}
+        errors={errors}
+        control={control}
       />{' '}
+      <BaseDesignedForm
+        name="lastName"
+        label="名"
+        helperText="10文字以内"
+        rules={{ required: '必須です。' }}
+        errors={errors}
+        control={control}
+      />{' '}
+      <br />
       <Controller
         as={
-          <TextField
-            label="名"
-            error={!!errors?.lastName}
-            variant="outlined"
-            margin="dense"
-            helperText={errors?.lastName?.message || '10文字以内'}
+          <Checkbox
+            defaultChecked
+            color="primary"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
         }
-        name="lastName"
+        name="isOwner"
         control={control}
-        defaultValue=""
-        rules={{ required: '必須です。' }}
       />
       <Controller
         as={
