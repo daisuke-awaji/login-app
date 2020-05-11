@@ -54,8 +54,8 @@ export function LoginPage() {
   const handleClick = () => setPasswordVisible(!visiblePassword)
 
   return (
-    <form onSubmit={handleSubmit(login)}>
-      <h3>Login</h3>
+    <form onSubmit={handleSubmit(login)} style={{ textAlign: 'center' }}>
+      <h1>Login</h1>
       <Controller
         as={
           <TextField

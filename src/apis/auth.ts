@@ -1,9 +1,10 @@
-export function login({ email, password }: any) {
-  console.log(password)
+export async function login({ email, password }: any) {
+  //   const sleep = (s: number) => new Promise((resolve) => setTimeout(resolve, s))
+  //   await sleep(1000)
   return new Promise((resolve) => {
     resolve({
       id: 123,
-      username: 'exampleUser',
+      username: 'exampleUser' + password,
       email: email,
     })
   })
