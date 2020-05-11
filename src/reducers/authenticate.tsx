@@ -18,8 +18,12 @@ export const unSetUser = (): IAuthenticateAction => {
 const authenticatedUser = (state = null, action: IAuthenticateAction) => {
   switch (action.type) {
     case SET_USER:
+      // TODO: サーバサイドでcookieにセットする方法に切り替える
+      localStorage.setItem('sessionId', '1')
       return action.user
     case UNSET_USER:
+      // TODO: サーバサイドでcookieにセットする方法に切り替える
+      localStorage.setItem('sessionId', '0')
       return null
     default:
       return state
