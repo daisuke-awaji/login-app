@@ -1,19 +1,61 @@
 import React, { useState } from 'react'
-import { Button, TextField, InputAdornment } from '@material-ui/core'
+import {
+  Button,
+  TextField,
+  InputAdornment,
+  Typography,
+  Link,
+  CssBaseline,
+  Avatar,
+  makeStyles,
+  Container,
+  FormControlLabel,
+  Grid,
+  Box,
+  Checkbox,
+} from '@material-ui/core'
 import { useForm, Controller } from 'react-hook-form'
-import { Visibility, VisibilityOff, MailOutline } from '@material-ui/icons'
+import {
+  Visibility,
+  VisibilityOff,
+  MailOutline,
+  Lock as LockIcon,
+} from '@material-ui/icons'
 import { toClicable } from './toClicable'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { login as loginApi } from 'apis/auth'
 import { setUser } from 'reducers/authenticate'
+import { Copyright } from './Copyright'
 
 type Inputs = {
   email: string
   password: string
 }
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}))
+
 export function LoginPage() {
+  const classes = useStyles()
+
   const { handleSubmit, control, errors, setError } = useForm<Inputs>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -54,71 +96,112 @@ export function LoginPage() {
   const handleClick = () => setPasswordVisible(!visiblePassword)
 
   return (
-    <form onSubmit={handleSubmit(login)} style={{ textAlign: 'center' }}>
-      <h1>Login</h1>
-      <Controller
-        as={
-          <TextField
-            label="メールアドレス"
-            error={!!errors.email}
-            variant="outlined"
-            margin="dense"
-            helperText={errors.email?.message || ''}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MailOutline />
-                </InputAdornment>
-              ),
-            }}
-          />
-        }
-        name="email"
-        control={control}
-        defaultValue="example@email.com"
-        rules={{ required: '必須です。' }}
-      />
-      <br />
-      <Controller
-        as={
-          <TextField
-            label="パスワード"
-            error={!!errors.password}
-            variant="outlined"
-            margin="dense"
-            helperText={errors.password?.message || ''}
-            type={visiblePassword ? 'default' : 'password'}
-            autoComplete="current-password"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  {visiblePassword
-                    ? toClicable(VisibilityOff, handleClick)
-                    : toClicable(Visibility, handleClick)}
-                </InputAdornment>
-              ),
-            }}
-          />
-        }
-        name="password"
-        control={control}
-        // Reactのフォームコンポーネントは、
-        // 割り当てられているStateの値がnullかundefinedになると、uncontrolledになってしまうので注意
-        defaultValue=""
-        rules={{ required: '必須です。' }}
-      />
-      <br />
-      <Controller
-        as={
-          <Button color="primary">
-            <span>Login</span>
-          </Button>
-        }
-        name="submit"
-        control={control}
-        defaultValue=""
-        onClick={handleSubmit(login)}
-      />
-    </form>
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form onSubmit={handleSubmit(login)} className={classes.form}>
+            <Controller
+              as={
+                <TextField
+                  label="メールアドレス"
+                  error={!!errors.email}
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  required
+                  helperText={errors.email?.message || ''}
+                  autoComplete="email"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MailOutline />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              }
+              name="email"
+              control={control}
+              defaultValue="example@email.com"
+              rules={{ required: '必須です。' }}
+            />
+            <Controller
+              as={
+                <TextField
+                  label="パスワード"
+                  error={!!errors.password}
+                  variant="outlined"
+                  margin="normal" // or dense
+                  fullWidth
+                  required
+                  helperText={errors.password?.message || ''}
+                  type={visiblePassword ? 'default' : 'password'}
+                  autoComplete="current-password"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {visiblePassword
+                          ? toClicable(VisibilityOff, handleClick)
+                          : toClicable(Visibility, handleClick)}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              }
+              name="password"
+              control={control}
+              // Reactのフォームコンポーネントは、
+              // 割り当てられているStateの値がnullかundefinedになると、uncontrolledになってしまうので注意
+              defaultValue=""
+              rules={{ required: '必須です。' }}
+            />
+            <Controller
+              as={
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+              }
+              name="submit"
+              control={control}
+              defaultValue=""
+              onClick={handleSubmit(login)}
+            />
+            {/* TODO: BELOW */}
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+    </>
   )
 }
