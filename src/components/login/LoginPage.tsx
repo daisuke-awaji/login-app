@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -162,6 +162,11 @@ export function LoginPage() {
               defaultValue=""
               rules={{ required: '必須です。' }}
             />
+            {/* TODO: BELOW */}
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
             <Controller
               as={
                 <Button
@@ -178,11 +183,6 @@ export function LoginPage() {
               control={control}
               defaultValue=""
               onClick={handleSubmit(login)}
-            />
-            {/* TODO: BELOW */}
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Grid container>
               <Grid item xs>

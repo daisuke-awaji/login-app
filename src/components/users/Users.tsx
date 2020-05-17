@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import { fetchUsers } from 'apis/users'
 import { IUser } from './IUser'
 
-interface IProps {}
+interface IProps {
+  classes?: any
+}
 interface IState {
   users: IUser[]
 }
@@ -19,7 +21,7 @@ export class Users extends React.Component<IProps, IState> {
   }
   render() {
     return (
-      <div>
+      <>
         <h1>Users</h1>
         <ul>
           {this.state.users?.map((user: IUser) => (
@@ -28,7 +30,7 @@ export class Users extends React.Component<IProps, IState> {
             </li>
           ))}
         </ul>
-      </div>
+      </>
     )
   }
 }

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import store from 'reducers/store'
 import { currentUser } from 'apis/auth'
 import { setUser } from 'reducers/authenticate'
+import './index.css'
 
 // TODO: cookieから取得する
 const sessionId = localStorage.getItem('sessionId')
