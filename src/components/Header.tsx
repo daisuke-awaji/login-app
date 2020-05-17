@@ -8,8 +8,11 @@ import MenuIcon from '@material-ui/icons/Menu'
 import { useDispatch } from 'react-redux'
 import { unSetUser } from 'reducers/authenticate'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import HomeIcon from '@material-ui/icons/Home'
+
 import { Tooltip } from '@material-ui/core'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,6 +32,9 @@ export default function Header() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const handleClickLogout = () => dispatch(unSetUser())
+  const history = useHistory()
+  const handleClickHome = () => history.push('/')
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="primary">
@@ -44,6 +50,11 @@ export default function Header() {
           <Typography variant="h6" className={classes.title}>
             App
           </Typography>
+          <Tooltip title="Home">
+            <IconButton color="inherit" onClick={handleClickHome}>
+              <HomeIcon />
+            </IconButton>
+          </Tooltip>
           {/* Tooltip has Warnings in strict mode*/}
           {/* https://github.com/mui-org/material-ui/issues/13394 */}
           <Tooltip title="User Profile">

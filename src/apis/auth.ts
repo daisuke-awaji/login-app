@@ -9,6 +9,7 @@ export async function login({ email, password }: any): Promise<IUser> {
       id: 123,
       name: 'exampleUser' + password,
       email: email,
+      type: 'admin',
     })
   })
 }
@@ -22,6 +23,7 @@ export async function currentUser(sessionId: string | null): Promise<IUser> {
         id: 123,
         name: 'exampleUser',
         email: 'example@email.com',
+        type: 'admin',
       })
     } else {
       reject(new Error('unauthorized'))
