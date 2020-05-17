@@ -11,8 +11,36 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { IUser } from './IUser'
+import {
+  withStyles,
+  Theme,
+  createStyles,
+  makeStyles,
+} from '@material-ui/core/styles'
+import { TableFooter, TablePagination } from '@material-ui/core'
+import { TablePaginationActions } from './TablePaginationActions'
+
+const StyledTableCell = withStyles((theme: Theme) =>
+  createStyles({
+    head: {
+      color: theme.palette.primary.main,
+      fontSize: 14,
+      fontWeight: 'bold',
+    },
+    body: {
+      fontSize: 14,
+    },
+  }),
+)(TableCell)
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 700,
+  },
+})
 
 export const Users = () => {
+  const classes = useStyles()
   const [users, setUsers] = useState<IUser[]>([])
 
   const fetchData = async () => {
@@ -22,37 +50,62 @@ export const Users = () => {
   useEffect(() => {
     fetchData()
   }, [])
+
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+
+  const emptyRowsInLastPage =
+    rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage)
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
+
+  const usersInPage =
+    rowsPerPage > 0
+      ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      : users
   return (
     <>
       <Typography variant="h3">Users</Typography>
       <TableContainer component={Paper}>
-        <Table style={{ tableLayout: 'auto' }} aria-label="user table">
+        <Table className={classes.table} aria-label="user table">
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: '10%' }} align="right">
+              <StyledTableCell style={{ width: '10%' }} align="right">
                 Id
-              </TableCell>
-              <TableCell style={{ width: '30%' }} align="right">
+              </StyledTableCell>
+              <StyledTableCell style={{ width: '30%' }} align="right">
                 Name
-              </TableCell>
-              <TableCell style={{ width: '40%' }} align="right">
+              </StyledTableCell>
+              <StyledTableCell style={{ width: '40%' }} align="right">
                 Email
-              </TableCell>
-              <TableCell style={{ width: '10%' }} align="right">
+              </StyledTableCell>
+              <StyledTableCell style={{ width: '10%' }} align="right">
                 Type
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user, key) => (
+            {usersInPage.map((user, key) => (
               <TableRow key={key}>
-                <TableCell style={{ width: '10%' }} align="right">
+                <StyledTableCell style={{ width: '10%' }} align="right">
                   {user.id}
-                </TableCell>
-                <TableCell style={{ width: '30%' }} align="right">
+                </StyledTableCell>
+                <StyledTableCell style={{ width: '30%' }} align="right">
                   <Link to={'/users/' + user.id}>{user.name}</Link>
-                </TableCell>
-                <TableCell
+                </StyledTableCell>
+                <StyledTableCell
                   style={{
                     width: '40%',
                     maxWidth: '100px',
@@ -63,13 +116,37 @@ export const Users = () => {
                   align="right"
                 >
                   {user.email}
-                </TableCell>
-                <TableCell style={{ width: '10%' }} align="right">
+                </StyledTableCell>
+                <StyledTableCell style={{ width: '10%' }} align="right">
                   {user.type}
-                </TableCell>
+                </StyledTableCell>
               </TableRow>
             ))}
+            {/* 最終ページだけ余白を用意する */}
+            {emptyRowsInLastPage > 0 && (
+              <TableRow style={{ height: 53 * emptyRowsInLastPage }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={3}
+                count={users.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { 'aria-label': 'rows per page' },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </>
