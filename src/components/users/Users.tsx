@@ -44,8 +44,8 @@ export const Users = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.name}>
+            {users.map((user, key) => (
+              <TableRow key={key}>
                 <TableCell style={{ width: '10%' }} align="right">
                   {user.id}
                 </TableCell>
