@@ -28,6 +28,7 @@ import { login as loginApi } from 'apis/auth'
 import { setUser } from 'reducers/authenticate'
 import { Copyright } from './Copyright'
 import GoogleLogin from 'react-google-login'
+import { IUser } from 'components/users/IUser'
 
 type Inputs = {
   email: string
@@ -57,10 +58,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
 }))
-
-const responseGoogle = (response: any) => {
-  console.log(response)
-}
 
 export function LoginPage() {
   const classes = useStyles()
@@ -99,6 +96,17 @@ export function LoginPage() {
       dispatch(setUser(user))
       history.replace(from)
     }
+  }
+  const responseGoogle = (response: any) => {
+    console.log(responseGoogle)
+    const user: IUser = {
+      id: response.googleId,
+      name: response.profileObj.name,
+      email: response.profileObj.email,
+      type: 'admin',
+    }
+    dispatch(setUser(user))
+    history.replace(from)
   }
 
   const [visiblePassword, setPasswordVisible] = useState(false)
