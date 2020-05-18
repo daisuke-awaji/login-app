@@ -27,6 +27,7 @@ import { useDispatch } from 'react-redux'
 import { login as loginApi } from 'apis/auth'
 import { setUser } from 'reducers/authenticate'
 import { Copyright } from './Copyright'
+import GoogleLogin from 'react-google-login'
 
 type Inputs = {
   email: string
@@ -51,7 +52,15 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  googleLogin: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+  },
 }))
+
+const responseGoogle = (response: any) => {
+  console.log(response)
+}
 
 export function LoginPage() {
   const classes = useStyles()
@@ -183,6 +192,14 @@ export function LoginPage() {
               control={control}
               defaultValue=""
               onClick={handleSubmit(login)}
+            />
+            <GoogleLogin
+              clientId="807822853495-o4cg5ie3t3qo93ou11j7uf7t6it04rc4.apps.googleusercontent.com"
+              buttonText="Login with Google"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+              className={classes.googleLogin}
             />
             <Grid container>
               <Grid item xs>

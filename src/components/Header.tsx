@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
 import { useDispatch } from 'react-redux'
 import { unSetUser } from 'reducers/authenticate'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
@@ -44,14 +43,6 @@ export default function Header() {
         style={{ background: 'transparent', boxShadow: 'none' }}
       >
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" className={classes.title}>
             <IconButton
               edge="start"
