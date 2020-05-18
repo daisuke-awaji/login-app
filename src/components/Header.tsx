@@ -13,6 +13,7 @@ import HomeIcon from '@material-ui/icons/Home'
 import { Tooltip } from '@material-ui/core'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory } from 'react-router-dom'
+import { ServiceLogo } from './ServiceLogo'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +38,11 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="primary">
+      <AppBar
+        position="static"
+        color="primary"
+        style={{ background: 'transparent', boxShadow: 'none' }}
+      >
         <Toolbar>
           <IconButton
             edge="start"
@@ -48,7 +53,15 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            App
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="home"
+              onClick={handleClickHome}
+            >
+              <ServiceLogo />
+            </IconButton>
           </Typography>
           <Tooltip title="Home">
             <IconButton color="inherit" onClick={handleClickHome}>

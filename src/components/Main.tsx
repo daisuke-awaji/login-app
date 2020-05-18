@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 import { Users } from './users/Users'
 import { UserInfo } from './users/UserInfo'
 import { PrivateRoute } from './router/PrivateRoute'
-import { HelloWorld as Home } from './Home'
+import { Home } from './Home'
 import { Container } from '@material-ui/core'
 import { RedirectToNotFound } from './router/RedirectToNotFound'
 

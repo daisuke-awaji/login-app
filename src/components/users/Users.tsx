@@ -77,7 +77,7 @@ export const Users = () => {
       : users
   return (
     <>
-      <Typography variant="h3">Users</Typography>
+      <Typography variant="h2">Users</Typography>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="user table">
           <TableHead>
