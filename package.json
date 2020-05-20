@@ -16,6 +16,7 @@
     "react-dom": "^16.13.1",
     "react-google-login": "^5.1.20",
     "react-hook-form": "^5.6.1",
+    "react-lottie": "^1.2.3",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
@@ -60,6 +61,7 @@
     "trailingComma": "all"
   },
   "devDependencies": {
+    "@types/react-lottie": "^1.2.5",
     "@types/react-redux": "^7.1.8",
     "@types/react-router": "^5.1.7",
     "@types/react-router-dom": "^5.1.5",
