@@ -61,9 +61,9 @@ const AppIconButton = (props: any) => {
 }
 
 const UserProfileButton = () => {
-  const history = useHistory()
-  const handleClick = () => history.push('/me')
   const user = useSelector((state: any) => state.authenticatedUser)
+  const history = useHistory()
+  const handleClick = () => history.push(`/users/${user.id}`)
   const title = `User Profile: ${user?.name}`
   return (
     <Tooltip title={title}>

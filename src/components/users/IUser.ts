@@ -4,6 +4,8 @@ export interface IUser {
   email: string
   gender?: Gender
   type: UserType
+  description?: string
+  img?: string
 }
 
 export type Gender = 'mail' | 'femail'

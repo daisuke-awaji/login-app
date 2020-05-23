@@ -1,67 +1,145 @@
-import React, { useState } from 'react'
-import { Grid, TextField, Button } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import { Grid, TextField, Button, Avatar } from '@material-ui/core'
 import { Typography } from '@material-ui/core'
-import { useSelector } from 'react-redux'
-import ButtonBase from '@material-ui/core/ButtonBase'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
+import { useParams, useHistory } from 'react-router-dom'
+import { fetchUser } from 'apis/users'
+import { IUser } from 'components/users/IUser'
+import { useForm, Controller } from 'react-hook-form'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      margin: 'auto',
-      maxWidth: 500,
-    },
-    image: {
-      width: 128,
-      height: 128,
-    },
     img: {
-      margin: 'auto',
-      display: 'block',
-      maxWidth: '100%',
-      maxHeight: '100%',
+      width: theme.spacing(12),
+      height: theme.spacing(12),
     },
   }),
 )
 
-const UserProfileCard = () => {
+const UserProfileCard = ({ userId }: { userId: number }) => {
   const classes = useStyles()
-  const user = useSelector((state: any) => state.authenticatedUser)
-  const [editable, setEditable] = useState(false)
-
-  const handleClick = () => setEditable(!editable)
-
-  const UserProfileEditColumn = () => {
-    const txt = `${user?.name} Lorem ipsum dolor sit, amet consectetur adipisicing elit📷✈️🏕️`
-    if (editable) {
-      return (
-        <TextField
-          id="outlined-multiline-static"
-          label="User Profile"
-          multiline
-          fullWidth
-          rows={3}
-          defaultValue={txt}
-          variant="outlined"
-        />
-      )
-    } else {
-      return (
-        <Typography variant="body2" gutterBottom>
-          {txt}
-        </Typography>
-      )
+  const history = useHistory()
+  const [user, setUser] = useState<IUser>()
+  const fetchData = async () => {
+    try {
+      const result = await fetchUser(userId)
+      setUser(result)
+    } catch (e) {
+      console.log(e)
+      history.push(`/404`)
     }
   }
+  useEffect(() => {
+    fetchData()
+  })
 
+  const { handleSubmit, control } = useForm<IUser>({
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+  })
+
+  const saveUser = (user: IUser) => {
+    console.log(user)
+    setUser({
+      id: 1,
+      name: user.name,
+      email: user.email,
+      description: user.description,
+      type: user.type,
+    })
+    setEditable(!editable)
+  }
+  const me = useSelector((state: any) => state.authenticatedUser)
+  const isMe = me.id === user?.id
+  const [editable, setEditable] = useState(false)
+  const handleClick = () => setEditable(!editable)
+  const Editable = ({ children, ...rest }: any) => {
+    const Text = rest?.rows ? (
+      <Controller
+        as={
+          <TextField
+            id="outlined-multiline-static"
+            label={rest.label}
+            multiline
+            fullWidth
+            rows={rest?.rows}
+            defaultValue={children.props.children}
+            variant="outlined"
+            style={{ padding: '10px' }}
+          />
+        }
+        name={rest.label}
+        control={control}
+      />
+    ) : (
+      <Controller
+        as={
+          <TextField
+            id="outlined"
+            label={rest.label}
+            fullWidth
+            defaultValue={children.props.children}
+            variant="outlined"
+            style={{ padding: '10px' }}
+          />
+        }
+        name={rest.label}
+        control={control}
+      />
+    )
+    return editable ? Text : children
+  }
+
+  const Name = () => (
+    <Editable label="name">
+      <Typography gutterBottom variant="subtitle1">
+        {user?.name}
+      </Typography>
+    </Editable>
+  )
+  const Email = () => (
+    <Editable label="email">
+      <Typography gutterBottom variant="subtitle2">
+        {user?.email}
+      </Typography>
+    </Editable>
+  )
+  const Description = () => (
+    <Editable label="description" rows={3}>
+      <Typography variant="body2" gutterBottom>
+        {user?.description}
+      </Typography>
+    </Editable>
+  )
+  const Type = () => (
+    <Typography variant="body2" color="textSecondary">
+      {user?.type}
+    </Typography>
+  )
+  const ID = () => (
+    <Typography variant="body2" color="textSecondary">
+      ID: {user?.id}
+    </Typography>
+  )
+  const SaveButton = () => {
+    return (
+      <Button onClick={handleSubmit(saveUser)} color="secondary">
+        Save
+      </Button>
+    )
+  }
   const EditButton = () => {
     return (
-      <Button onClick={handleClick} color={editable ? 'secondary' : 'primary'}>
-        {editable ? 'Save' : 'Edit'}
+      <Button onClick={handleClick} color="primary">
+        Edit
+      </Button>
+    )
+  }
+  const CancelButton = () => {
+    return (
+      <Button onClick={handleClick} color="default">
+        Cancel
       </Button>
     )
   }
@@ -69,28 +147,31 @@ const UserProfileCard = () => {
   return (
     <Grid container spacing={2} justify="center">
       <Grid item>
-        <ButtonBase className={classes.image}>
-          <img
-            className={classes.img}
-            alt="userProfileImg"
-            src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-          />
-        </ButtonBase>
+        <Avatar
+          alt={user?.name + 'ProfileImage'}
+          src={user?.img}
+          className={classes.img}
+        />
       </Grid>
-      <Grid item xs={12} sm container>
+      <Grid item xs={12} container>
         <Grid item xs container direction="column" spacing={2}>
           <Grid item xs>
-            <Typography gutterBottom variant="subtitle1">
-              {user?.name}
-            </Typography>
-            <UserProfileEditColumn />
-            <Typography variant="body2" color="textSecondary">
-              ID: {user?.id}
-            </Typography>
+            <form onSubmit={handleSubmit(saveUser)}>
+              <Name />
+              <Email />
+              <Description />
+              <ID />
+              <Type />
+            </form>
           </Grid>
-          <Grid item container alignItems="flex-end" justify="flex-end">
-            <EditButton />
-          </Grid>
+
+          {isMe ? (
+            <Grid item container alignItems="flex-end" justify="flex-end">
+              {editable ? undefined : <EditButton />}
+              {editable ? <CancelButton /> : undefined}
+              {editable ? <SaveButton /> : undefined}
+            </Grid>
+          ) : undefined}
         </Grid>
       </Grid>
     </Grid>
@@ -98,6 +179,7 @@ const UserProfileCard = () => {
 }
 
 export function UserProfile() {
+  const { id } = useParams()
   return (
     <div>
       <Typography variant="h2" gutterBottom>
@@ -105,7 +187,7 @@ export function UserProfile() {
       </Typography>
       <Grid container spacing={2} justify="center" alignItems="center">
         <Grid item xs={8}>
-          <UserProfileCard />
+          <UserProfileCard userId={id} />
         </Grid>
       </Grid>
     </div>
