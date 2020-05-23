@@ -61,9 +61,13 @@ const AppIconButton = (props: any) => {
 }
 
 const UserProfileButton = () => {
+  const history = useHistory()
+  const handleClick = () => history.push('/me')
+  const user = useSelector((state: any) => state.authenticatedUser)
+  const title = `User Profile: ${user?.name}`
   return (
-    <Tooltip title="User Profile">
-      <IconButton color="inherit">
+    <Tooltip title={title}>
+      <IconButton color="inherit" onClick={handleClick}>
         <AccountCircleIcon />
       </IconButton>
     </Tooltip>
@@ -72,7 +76,6 @@ const UserProfileButton = () => {
 
 export default function Header() {
   const classes = useStyles()
-  const user = useSelector((state: any) => state.authenticatedUser)
   return (
     <div className={classes.root}>
       <AppBar
@@ -84,7 +87,6 @@ export default function Header() {
           <Typography variant="h6" className={classes.title}>
             <AppIconButton className={classes.menuButton} />
           </Typography>
-          <Typography>{user?.name}</Typography>
           <HomeButton />
           <UserProfileButton />
           <LogoutButton />

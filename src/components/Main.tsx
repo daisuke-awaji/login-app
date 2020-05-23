@@ -7,10 +7,12 @@ import { PrivateRoute } from './router/PrivateRoute'
 import { Home } from './Home'
 import { Container } from '@material-ui/core'
 import { RedirectToNotFound } from './router/RedirectToNotFound'
+import { UserProfile } from './profile/UserProfile'
 
 export const routes = [
   { path: '/users', name: 'users', Component: Users },
   { path: '/users/:id', name: 'user', Component: UserInfo },
+  { path: '/me', name: 'me', Component: UserProfile },
   { path: '/', name: 'home', Component: Home },
 ]
 

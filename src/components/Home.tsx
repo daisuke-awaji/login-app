@@ -52,33 +52,6 @@ export const Home = () => {
         <Grid item>
           <CardOne />
         </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
-        <Grid item>
-          <CardOne />
-        </Grid>
       </Grid>
     </div>
   )
