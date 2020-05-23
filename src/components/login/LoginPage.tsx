@@ -15,12 +15,7 @@ import {
   Checkbox,
 } from '@material-ui/core'
 import { useForm, Controller } from 'react-hook-form'
-import {
-  Visibility,
-  VisibilityOff,
-  MailOutline,
-  Lock as LockIcon,
-} from '@material-ui/icons'
+import { Visibility, VisibilityOff, MailOutline } from '@material-ui/icons'
 import { toClicable } from './toClicable'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -29,6 +24,7 @@ import { setUser } from 'reducers/authenticate'
 import { Copyright } from './Copyright'
 import GoogleLogin from 'react-google-login'
 import { IUser } from 'components/users/IUser'
+import { AvatarsAnimation } from 'components/AvatarsAnimation'
 
 type Inputs = {
   email: string
@@ -43,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   avatar: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
+    width: theme.spacing(9),
+    height: theme.spacing(9),
     backgroundColor: theme.palette.primary.main,
   },
   form: {
@@ -112,7 +110,7 @@ export function LoginPage() {
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockIcon />
+            <AvatarsAnimation />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
