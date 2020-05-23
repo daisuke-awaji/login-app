@@ -138,7 +138,6 @@ export function LoginPage() {
               }
               name="email"
               control={control}
-              defaultValue="usera@email.com"
               rules={{ required: '必須です。' }}
             />
             <Controller
