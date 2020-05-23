@@ -73,28 +73,22 @@ export function LoginPage() {
   }
   const dispatch = useDispatch()
   const login = async (data: Inputs) => {
-    // TODO: 認証APIを実行する
-    const valid = (data: Inputs) => {
-      const { email, password } = data
-      if (email !== 'example@email.com' || password !== 'a') {
-        setError(
-          'email',
-          'hasAnyError',
-          'メールアドレスまたはパスワードが不正です。',
-        )
-        setError(
-          'password',
-          'hasAnyError',
-          'メールアドレスまたはパスワードが不正です。',
-        )
-        return false
-      }
-      return true
-    }
-    const user = await loginApi(data)
-    if (valid(data)) {
+    try {
+      const user = await loginApi(data)
       dispatch(setUser(user))
       history.replace(from)
+    } catch (e) {
+      console.log(e)
+      setError(
+        'email',
+        'hasAnyError',
+        'メールアドレスまたはパスワードが不正です。',
+      )
+      setError(
+        'password',
+        'hasAnyError',
+        'メールアドレスまたはパスワードが不正です。',
+      )
     }
   }
   const responseGoogle = (response: any) => {
@@ -146,7 +140,7 @@ export function LoginPage() {
               }
               name="email"
               control={control}
-              defaultValue="example@email.com"
+              defaultValue="usera@email.com"
               rules={{ required: '必須です。' }}
             />
             <Controller

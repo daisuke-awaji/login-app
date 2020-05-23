@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": ["node_modules/@types", "node_modules/jest-enzyme"],
     "baseUrl": "src", // import を絶対パスにする
     "allowJs": true,
     "skipLibCheck": true,

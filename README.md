@@ -4,6 +4,18 @@ login sample app
 
 Form: react-hook-form
 
+## Tools
+
+| Category      | Library                                                                     |
+| ------------- | --------------------------------------------------------------------------- |
+| Language      | [Node.js](https://nodejs.org/ja/)                                           |
+| Unit test     | [jest](https://jestjs.io/)<br> [Enzyme](https://github.com/enzymejs/enzyme) |
+| E2E test      | [Cypress](https://github.com/cypress-io/cypress)                            |
+| CI/CD         | [CircleCI](https://circleci.com/)                                           |
+| Design System | Material-ui                                                                 |
+
+https://techblog.zozo.com/entry/hairstyle-spa |
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
