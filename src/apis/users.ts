@@ -25,8 +25,7 @@ export const users: IUser[] = [
 ]
 
 export const fetchUser = async (userId: string): Promise<IUser> => {
-  await sleep(500)
-
+  await sleep(1000)
   return new Promise<IUser>((resolve, reject) => {
     const one = users.find((user) => user.id === userId)
     if (!one) {

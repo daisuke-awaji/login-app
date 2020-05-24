@@ -8,6 +8,9 @@ import { IUser } from 'components/users/IUser'
 import { useForm, Controller } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 
+import { List } from 'react-content-loader'
+const TextLoader = () => <List />
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     img: {
@@ -187,7 +190,15 @@ const UserProfileCard = ({ userId }: { userId: string }) => {
       </Grid>
       <Grid item xs={12} container>
         <Grid item xs container direction="column" spacing={2}>
-          {editable ? <EditableForms /> : <UserProfileTexts />}
+          {user ? (
+            editable ? (
+              <EditableForms />
+            ) : (
+              <UserProfileTexts />
+            )
+          ) : (
+            <TextLoader />
+          )}
         </Grid>
       </Grid>
     </Grid>
