@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   },
 })
 
-export const Users = () => {
+const Users = () => {
   const classes = useStyles()
   const [users, setUsers] = useState<IUser[]>([])
 
@@ -152,3 +152,5 @@ export const Users = () => {
     </>
   )
 }
+
+export default Users

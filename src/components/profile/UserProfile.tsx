@@ -67,6 +67,7 @@ const UserProfileCard = ({ userId }: { userId: number }) => {
             defaultValue={children.props.children}
             variant="outlined"
             style={{ padding: '10px' }}
+            size="small"
           />
         }
         name={rest.label}
@@ -82,6 +83,7 @@ const UserProfileCard = ({ userId }: { userId: number }) => {
             defaultValue={children.props.children}
             variant="outlined"
             style={{ padding: '10px' }}
+            size="small"
           />
         }
         name={rest.label}
@@ -178,7 +180,7 @@ const UserProfileCard = ({ userId }: { userId: number }) => {
   )
 }
 
-export function UserProfile() {
+function UserProfile() {
   const { id } = useParams()
   return (
     <div>
@@ -193,3 +195,5 @@ export function UserProfile() {
     </div>
   )
 }
+
+export default UserProfile

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const Home = () => {
+const Home = () => {
   const classes = useStyles()
   const history = useHistory()
   const handleClick = () => {
@@ -56,3 +56,5 @@ export const Home = () => {
     </div>
   )
 }
+
+export default Home
