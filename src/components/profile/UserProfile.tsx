@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-const UserProfileCard = ({ userId }: { userId: number }) => {
+const UserProfileCard = ({ userId }: { userId: string }) => {
   const classes = useStyles()
   const history = useHistory()
   const [user, setUser] = useState<IUser>()
@@ -26,123 +26,153 @@ const UserProfileCard = ({ userId }: { userId: number }) => {
       const result = await fetchUser(userId)
       setUser(result)
     } catch (e) {
-      console.log(e)
       history.push(`/404`)
     }
   }
   useEffect(() => {
     fetchData()
-  })
+    // 本来は POSTリクエストが完了したら再度 fetchData() を実行したい。
+    // 違う userId が history に push された場合に再度 fetch されるようにしている。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
 
-  const { handleSubmit, control } = useForm<IUser>({
-    mode: 'onBlur',
-    reValidateMode: 'onChange',
-  })
-
-  const saveUser = (user: IUser) => {
-    console.log(user)
-    setUser({
-      id: 1,
-      name: user.name,
-      email: user.email,
-      description: user.description,
-      type: user.type,
-    })
-    setEditable(!editable)
-  }
   const me = useSelector((state: any) => state.authenticatedUser)
   const isMe = me.id === user?.id
   const [editable, setEditable] = useState(false)
-  const handleClick = () => setEditable(!editable)
-  const Editable = ({ children, ...rest }: any) => {
-    const Text = rest?.rows ? (
-      <Controller
-        as={
-          <TextField
-            id="outlined-multiline-static"
-            label={rest.label}
-            multiline
-            fullWidth
-            rows={rest?.rows}
-            defaultValue={children.props.children}
-            variant="outlined"
-            style={{ padding: '10px' }}
-            size="small"
-          />
-        }
-        name={rest.label}
-        control={control}
-      />
-    ) : (
-      <Controller
-        as={
-          <TextField
-            id="outlined"
-            label={rest.label}
-            fullWidth
-            defaultValue={children.props.children}
-            variant="outlined"
-            style={{ padding: '10px' }}
-            size="small"
-          />
-        }
-        name={rest.label}
-        control={control}
-      />
-    )
-    return editable ? Text : children
-  }
-
-  const Name = () => (
-    <Editable label="name">
-      <Typography gutterBottom variant="subtitle1">
-        {user?.name}
-      </Typography>
-    </Editable>
-  )
-  const Email = () => (
-    <Editable label="email">
-      <Typography gutterBottom variant="subtitle2">
-        {user?.email}
-      </Typography>
-    </Editable>
-  )
-  const Description = () => (
-    <Editable label="description" rows={3}>
-      <Typography variant="body2" gutterBottom>
-        {user?.description}
-      </Typography>
-    </Editable>
-  )
-  const Type = () => (
-    <Typography variant="body2" color="textSecondary">
-      {user?.type}
-    </Typography>
-  )
-  const ID = () => (
-    <Typography variant="body2" color="textSecondary">
-      ID: {user?.id}
-    </Typography>
-  )
-  const SaveButton = () => {
-    return (
-      <Button onClick={handleSubmit(saveUser)} color="secondary">
-        Save
-      </Button>
-    )
-  }
   const EditButton = () => {
     return (
-      <Button onClick={handleClick} color="primary">
+      <Button onClick={() => setEditable(!editable)} color="primary">
         Edit
       </Button>
     )
   }
-  const CancelButton = () => {
+
+  const UserProfileTexts = () => {
+    const Name = () => (
+      <Typography gutterBottom variant="subtitle1">
+        {user?.name}
+      </Typography>
+    )
+    const Email = () => (
+      <Typography gutterBottom variant="subtitle2">
+        {user?.email}
+      </Typography>
+    )
+    const Description = () => (
+      <Typography variant="body2" gutterBottom>
+        {user?.description}
+      </Typography>
+    )
+    const Type = () => (
+      <Typography variant="body2" color="textSecondary">
+        {user?.type}
+      </Typography>
+    )
+    const ID = () => (
+      <Typography variant="body2" color="textSecondary">
+        ID: {user?.id}
+      </Typography>
+    )
     return (
-      <Button onClick={handleClick} color="default">
-        Cancel
-      </Button>
+      <>
+        <Name />
+        <Email />
+        <Description />
+        <ID />
+        <Type />
+        {isMe ? (
+          <Grid item container alignItems="flex-end" justify="flex-end">
+            {editable ? undefined : <EditButton />}
+          </Grid>
+        ) : undefined}
+      </>
+    )
+  }
+
+  const EditableForms = () => {
+    const { handleSubmit, control, register } = useForm<IUser>({
+      mode: 'onBlur',
+      reValidateMode: 'onChange',
+    })
+    const saveUser = (user: IUser) => {
+      console.log(user)
+      setUser(user)
+      setEditable(!editable)
+    }
+
+    const SaveButton = () => {
+      return (
+        <Button onClick={handleSubmit(saveUser)} color="secondary">
+          Save
+        </Button>
+      )
+    }
+    const CancelButton = () => {
+      return (
+        <Button onClick={() => setEditable(!editable)} color="default">
+          Cancel
+        </Button>
+      )
+    }
+    return (
+      <form>
+        <input ref={register} type="hidden" name="id" value={user?.id} />
+        <Controller
+          as={
+            <TextField
+              id="nameInputForm"
+              label="name"
+              fullWidth
+              variant="outlined"
+              style={{ padding: '10px' }}
+              size="small"
+            />
+          }
+          name="name"
+          control={control}
+          defaultValue={user?.name}
+        />
+        <Controller
+          as={
+            <TextField
+              id="emailInputForm"
+              label="email"
+              fullWidth
+              variant="outlined"
+              style={{ padding: '10px' }}
+              size="small"
+            />
+          }
+          name="email"
+          control={control}
+          defaultValue={user?.email}
+        />
+        <Controller
+          as={
+            <TextField
+              id="descriptionInputForm"
+              label="description"
+              multiline
+              fullWidth
+              rows={3}
+              variant="outlined"
+              style={{ padding: '10px' }}
+              size="small"
+            />
+          }
+          name="description"
+          control={control}
+          defaultValue={user?.description}
+        />
+        {editable ? (
+          <Grid item container alignItems="flex-end" justify="flex-end">
+            <CancelButton />
+            <SaveButton />
+          </Grid>
+        ) : undefined}
+        <input ref={register} type="hidden" name="type" value={user?.type} />
+        <input ref={register} type="hidden" name="img" value={user?.img} />
+      </form>
     )
   }
 
@@ -157,23 +187,7 @@ const UserProfileCard = ({ userId }: { userId: number }) => {
       </Grid>
       <Grid item xs={12} container>
         <Grid item xs container direction="column" spacing={2}>
-          <Grid item xs>
-            <form onSubmit={handleSubmit(saveUser)}>
-              <Name />
-              <Email />
-              <Description />
-              <ID />
-              <Type />
-            </form>
-          </Grid>
-
-          {isMe ? (
-            <Grid item container alignItems="flex-end" justify="flex-end">
-              {editable ? undefined : <EditButton />}
-              {editable ? <CancelButton /> : undefined}
-              {editable ? <SaveButton /> : undefined}
-            </Grid>
-          ) : undefined}
+          {editable ? <EditableForms /> : <UserProfileTexts />}
         </Grid>
       </Grid>
     </Grid>
@@ -181,7 +195,7 @@ const UserProfileCard = ({ userId }: { userId: number }) => {
 }
 
 function UserProfile() {
-  const { id } = useParams()
+  let { id } = useParams()
   return (
     <div>
       <Typography variant="h2" gutterBottom>

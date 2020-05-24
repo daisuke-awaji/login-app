@@ -1,10 +1,11 @@
 // mock
 
 import { IUser } from 'components/users/IUser'
+import { sleep } from './utils'
 
 export const users: IUser[] = [
   {
-    id: 100895432023,
+    id: '0342a27b-e1f8-456b-8bc8-8e7cff1f4d9a',
     name: 'janedoe_',
     email: 'usera@email.com',
     type: 'admin',
@@ -14,7 +15,7 @@ export const users: IUser[] = [
       'https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces',
   },
   {
-    id: 450982843206,
+    id: '101dfbc1-5384-44f2-8628-f2399b46fdd6',
     name: 'Muhammed Erdem',
     email: 'userb@email.com',
     type: 'default',
@@ -23,9 +24,11 @@ export const users: IUser[] = [
   },
 ]
 
-export const fetchUser = (userId: number): Promise<IUser> => {
+export const fetchUser = async (userId: string): Promise<IUser> => {
+  await sleep(500)
+
   return new Promise<IUser>((resolve, reject) => {
-    const one = users.find((user) => user.id === Number(userId))
+    const one = users.find((user) => user.id === userId)
     if (!one) {
       reject('error')
     }

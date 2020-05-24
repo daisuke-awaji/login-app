@@ -1,7 +1,6 @@
 import { IUser } from 'components/users/IUser'
 import { users } from 'apis/users'
-
-const sleep = (s: number) => new Promise((resolve) => setTimeout(resolve, s))
+import { sleep } from './utils'
 
 export async function login({ email, password }: any): Promise<IUser> {
   await sleep(500)
