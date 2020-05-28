@@ -56,11 +56,6 @@ exports[`スナップショット レンダリングができること 1`] = `
           />
         </button>
       </h6>
-      <p
-        className="MuiTypography-root MuiTypography-body1"
-      >
-        John Scott
-      </p>
       <button
         aria-describedby={null}
         className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
@@ -105,6 +100,7 @@ exports[`スナップショット レンダリングができること 1`] = `
         className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
         disabled={false}
         onBlur={[Function]}
+        onClick={[Function]}
         onDragLeave={[Function]}
         onFocus={[Function]}
         onKeyDown={[Function]}
@@ -117,7 +113,7 @@ exports[`スナップショット レンダリングができること 1`] = `
         onTouchMove={[Function]}
         onTouchStart={[Function]}
         tabIndex={0}
-        title="User Profile"
+        title="User Profile: undefined"
         type="button"
       >
         <span

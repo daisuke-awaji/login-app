@@ -5,14 +5,14 @@ import * as serviceWorker from 'serviceWorker'
 import { Provider } from 'react-redux'
 import store from 'reducers/store'
 import { currentUser } from 'apis/auth'
-import { setUser } from 'reducers/authenticate'
+import { loginAction } from 'reducers/authenticate'
 import './index.css'
 
 // TODO: cookieから取得する
 const sessionId = localStorage.getItem('sessionId')
 
 currentUser(sessionId)
-  .then((user) => store.dispatch(setUser(user)))
+  .then((user) => store.dispatch(loginAction(user)))
   .catch((error) => console.log(error))
   .then(() => {
     ReactDOM.render(

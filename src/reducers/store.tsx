@@ -1,13 +1,17 @@
-import { createStore } from 'redux'
-import { combineReducers, compose } from 'redux'
-import authenticatedUser from './authenticate'
+import { createStore, applyMiddleware } from 'redux'
+import { combineReducers } from 'redux'
+import auth from './authenticate'
+import thunk from 'redux-thunk'
 
 const reducer = combineReducers({
-  authenticatedUser,
+  authenticatedUser: auth,
 })
 
 // TypeScript で Redux Dev Tools を使用する
-const composeEnhancers =
-  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+// const composeEnhancers =
+// (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export default createStore(reducer /* preloadedState, */, composeEnhancers())
+export default createStore(
+  reducer /* preloadedState, */,
+  applyMiddleware(thunk),
+)

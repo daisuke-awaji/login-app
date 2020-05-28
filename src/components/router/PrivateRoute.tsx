@@ -11,7 +11,9 @@ export function PrivateRoute({ children, ...rest }: any) {
   return (
     <Route
       {...rest}
-      render={({ location }) => (user ? children : redirectToLogin(location))}
+      render={({ location }) =>
+        user?.user ? children : redirectToLogin(location)
+      }
     />
   )
 }

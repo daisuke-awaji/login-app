@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import { combineReducers, createStore } from 'redux'
-import authenticatedUser, { setUser } from 'reducers/authenticate'
+import auth, { loginAction } from 'reducers/authenticate'
 import Header from './Header'
 import renderer from 'react-test-renderer'
 import { IUser } from '../users/IUser'
@@ -20,7 +20,7 @@ const setup = () => {
   // Routerコンポーネントに依存する hisotry は mock 化して注入する
   const mockHistory: any = { push: jest.fn(), location: {}, listen: jest.fn() }
   // Redux は必要な store だけ mock を作成して注入する
-  const reducer = combineReducers({ authenticatedUser })
+  const reducer = combineReducers({ authenticatedUser: auth })
   const mockStore = createStore(reducer)
   const component = (
     <Provider store={mockStore}>
@@ -32,12 +32,12 @@ const setup = () => {
   const getWrapper = () => mount(component)
 
   const user: IUser = {
-    id: 1,
+    id: '1',
     name: 'John Scott',
     email: 'john@email.com',
     type: 'admin',
   }
-  mockStore.dispatch(setUser(user))
+  mockStore.dispatch(loginAction(user))
   return { wrapper: getWrapper(), component }
 }
 /**
@@ -46,12 +46,6 @@ const setup = () => {
  * mountを使用したFULLレンダリングの方が効率的で可読性も良いと考えた
  */
 describe('Headerコンポーネントの FULLレンダリングテスト', () => {
-  describe('テキスト表示', () => {
-    it('ヘッダーにユーザの名前が表示されている', () => {
-      const { wrapper } = setup()
-      expect(wrapper.contains('John Scott')).toBe(true)
-    })
-  })
   describe('Homeボタン', () => {
     it('Homeボタン押下でHome画面に遷移される', () => {
       const { wrapper } = setup()

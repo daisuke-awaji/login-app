@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   TextField,
@@ -16,15 +16,13 @@ import {
 } from '@material-ui/core'
 import { useForm, Controller } from 'react-hook-form'
 import { Visibility, VisibilityOff, MailOutline } from '@material-ui/icons'
-import { toClicable } from './toClicable'
+import { toClickable } from './toClickable'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { login as loginApi } from 'apis/auth'
-import { setUser } from 'reducers/authenticate'
+import { thunkedLoginAction } from 'reducers/authenticate'
 import { Copyright } from './Copyright'
-import GoogleLogin from 'react-google-login'
-import { IUser } from 'components/users/IUser'
 import { AvatarsAnimation } from 'components/AvatarsAnimation'
+import { useSelector } from 'react-redux'
 
 type Inputs = {
   email: string
@@ -60,23 +58,29 @@ const useStyles = makeStyles((theme) => ({
 export function LoginPage() {
   const classes = useStyles()
 
+  const [visiblePassword, setPasswordVisible] = useState(false)
+  const handleClick = () => setPasswordVisible(!visiblePassword)
+
   const { handleSubmit, control, errors, setError } = useForm<Inputs>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
   })
 
   const history = useHistory()
-  const { from }: any = history.location.state || {
-    from: { pathname: '/' },
-  }
+
   const dispatch = useDispatch()
-  const login = async (data: Inputs) => {
-    try {
-      const user = await loginApi(data)
-      dispatch(setUser(user))
+  const login = (data: Inputs) => {
+    dispatch(thunkedLoginAction(data))
+  }
+  const auth = useSelector((state: any) => state.authenticatedUser)
+  useEffect(() => {
+    if (auth.user) {
+      const { from }: any = history.location.state || {
+        from: { pathname: '/' },
+      }
       history.replace(from)
-    } catch (e) {
-      console.log(e)
+    }
+    if (auth.error) {
       setError(
         'email',
         'hasAnyError',
@@ -88,21 +92,7 @@ export function LoginPage() {
         'メールアドレスまたはパスワードが不正です。',
       )
     }
-  }
-  const responseGoogle = (response: any) => {
-    console.log(responseGoogle)
-    const user: IUser = {
-      id: response.googleId,
-      name: response.profileObj.name,
-      email: response.profileObj.email,
-      type: 'admin',
-    }
-    dispatch(setUser(user))
-    history.replace(from)
-  }
-
-  const [visiblePassword, setPasswordVisible] = useState(false)
-  const handleClick = () => setPasswordVisible(!visiblePassword)
+  })
 
   return (
     <>
@@ -115,7 +105,7 @@ export function LoginPage() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form onSubmit={handleSubmit(login)} className={classes.form}>
+          <form className={classes.form}>
             <Controller
               as={
                 <TextField
@@ -138,6 +128,7 @@ export function LoginPage() {
               }
               name="email"
               control={control}
+              defaultValue=""
               rules={{ required: '必須です。' }}
             />
             <Controller
@@ -156,8 +147,8 @@ export function LoginPage() {
                     startAdornment: (
                       <InputAdornment position="start">
                         {visiblePassword
-                          ? toClicable(VisibilityOff, handleClick)
-                          : toClicable(Visibility, handleClick)}
+                          ? toClickable(VisibilityOff, handleClick)
+                          : toClickable(Visibility, handleClick)}
                       </InputAdornment>
                     ),
                   }}
@@ -167,6 +158,7 @@ export function LoginPage() {
               control={control}
               // Reactのフォームコンポーネントは、
               // 割り当てられているStateの値がnullかundefinedになると、uncontrolledになってしまうので注意
+              // https://github.com/react-hook-form/react-hook-form-website/issues/133
               defaultValue=""
               rules={{ required: '必須です。' }}
             />
@@ -191,14 +183,6 @@ export function LoginPage() {
               control={control}
               defaultValue=""
               onClick={handleSubmit(login)}
-            />
-            <GoogleLogin
-              clientId="807822853495-o4cg5ie3t3qo93ou11j7uf7t6it04rc4.apps.googleusercontent.com"
-              buttonText="Login with Google"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={'single_host_origin'}
-              className={classes.googleLogin}
             />
             <Grid container>
               <Grid item xs>
