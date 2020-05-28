@@ -39,8 +39,8 @@ const UserProfileCard = ({ userId }: { userId: string }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
 
-  const me = useSelector((state: any) => state.authenticatedUser)
-  const isMe = me.id === user?.id
+  const auth = useSelector((state: any) => state.authenticatedUser)
+  const isMe = auth.user.id === user?.id
   const [editable, setEditable] = useState(false)
   const EditButton = () => {
     return (

@@ -7,12 +7,12 @@ function redirectToLogin(location: any): React.ReactNode {
 }
 
 export function PrivateRoute({ children, ...rest }: any) {
-  const user = useSelector((state: any) => state.authenticatedUser)
+  const auth = useSelector((state: any) => state.authenticatedUser)
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        user?.user ? children : redirectToLogin(location)
+        auth?.user ? children : redirectToLogin(location)
       }
     />
   )
