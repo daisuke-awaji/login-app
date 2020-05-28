@@ -113,7 +113,7 @@ exports[`スナップショット レンダリングができること 1`] = `
         onTouchMove={[Function]}
         onTouchStart={[Function]}
         tabIndex={0}
-        title="User Profile: undefined"
+        title="User Profile: John Scott"
         type="button"
       >
         <span
