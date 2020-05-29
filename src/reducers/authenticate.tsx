@@ -14,7 +14,7 @@ interface IAuthenticateAction {
   error: any | null
 }
 
-export const loginAction = (user: IUser): IAuthenticateAction => {
+export const loginSucceedAction = (user: IUser): IAuthenticateAction => {
   return { type: LoginActionType.LOGIN_SUCCEED, user, error: null }
 }
 
@@ -31,7 +31,7 @@ export const thunkedLoginAction = ({ email, password }: any) => {
   return async (dispatch: any) => {
     try {
       const user = await login({ email, password })
-      return dispatch(loginAction(user))
+      return dispatch(loginSucceedAction(user))
     } catch (error) {
       return dispatch(loginFailedAction(error))
     }
@@ -56,10 +56,9 @@ interface IState {
   user: IUser | null
   error: any | null
 }
-const auth = (
-  state: IState = { isFetching: false, user: null, error: null },
-  action: IAuthenticateAction,
-) => {
+
+const initialState = { isFetching: false, user: null, error: null }
+const auth = (state: IState = initialState, action: IAuthenticateAction) => {
   switch (action.type) {
     case LoginActionType.LOGIN_SUCCEED:
       // TODO: サーバサイドでcookieにセットする方法に切り替える

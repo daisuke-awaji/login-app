@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import { combineReducers, createStore } from 'redux'
-import auth, { loginAction } from 'reducers/authenticate'
+import auth, { loginSucceedAction } from 'reducers/authenticate'
 import Header from './Header'
 import renderer from 'react-test-renderer'
 import { IUser } from '../users/IUser'
@@ -37,7 +37,7 @@ const setup = () => {
     email: 'john@email.com',
     type: 'admin',
   }
-  mockStore.dispatch(loginAction(user))
+  mockStore.dispatch(loginSucceedAction(user))
   return { wrapper: getWrapper(), component }
 }
 /**
