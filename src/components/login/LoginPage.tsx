@@ -23,6 +23,7 @@ import { thunkedLoginAction } from 'reducers/authenticate'
 import { Copyright } from './Copyright'
 import { AvatarsAnimation } from 'components/AvatarsAnimation'
 import { useSelector } from 'react-redux'
+import { AppState } from 'reducers/store'
 
 type Inputs = {
   email: string
@@ -55,6 +56,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+const Loading = () => <>Loading...</>
+
 export function LoginPage() {
   const classes = useStyles()
 
@@ -72,7 +75,7 @@ export function LoginPage() {
   const login = (data: Inputs) => {
     dispatch(thunkedLoginAction(data))
   }
-  const auth = useSelector((state: any) => state.authenticatedUser)
+  const auth = useSelector((state: AppState) => state.authenticatedUser)
   useEffect(() => {
     if (auth.user) {
       const { from }: any = history.location.state || {
@@ -93,6 +96,9 @@ export function LoginPage() {
       )
     }
   })
+  if (auth.isFetching) {
+    return <Loading />
+  }
 
   return (
     <>

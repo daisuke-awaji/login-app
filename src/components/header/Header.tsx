@@ -4,14 +4,12 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import { useSelector } from 'react-redux'
 import HomeIcon from '@material-ui/icons/Home'
-
 import { Tooltip } from '@material-ui/core'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory } from 'react-router-dom'
 import { ServiceLogo } from '../ServiceLogo'
 import LogoutButton from '../logout/LogoutButton'
+import { UserProfileButton } from './UserProfileButton'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -60,21 +58,6 @@ const AppIconButton = (props: any) => {
   )
 }
 
-const UserProfileButton = () => {
-  const auth = useSelector((state: any) => state.authenticatedUser)
-  const history = useHistory()
-  const handleClick = () =>
-    history.push(`/users/${auth.user.id}`, { update: true })
-  const title = `User Profile: ${auth.user?.name}`
-  return (
-    <Tooltip title={title}>
-      <IconButton color="inherit" onClick={handleClick}>
-        <AccountCircleIcon />
-      </IconButton>
-    </Tooltip>
-  )
-}
-
 export default function Header() {
   const classes = useStyles()
   return (
@@ -89,8 +72,8 @@ export default function Header() {
             <AppIconButton className={classes.menuButton} />
           </Typography>
           <HomeButton />
-          <UserProfileButton />
           <LogoutButton />
+          <UserProfileButton />
         </Toolbar>
       </AppBar>
     </div>

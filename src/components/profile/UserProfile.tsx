@@ -3,12 +3,13 @@ import { Grid, TextField, Button, Avatar } from '@material-ui/core'
 import { Typography } from '@material-ui/core'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import { useParams, useHistory } from 'react-router-dom'
-import { fetchUser } from 'apis/users'
 import { IUser } from 'components/users/IUser'
 import { useForm, Controller } from 'react-hook-form'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { List } from 'react-content-loader'
+import { useUser } from './useUser'
+import { thunkedUpdateUserAction } from 'reducers/users'
 const TextLoader = () => <List />
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,22 +23,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const UserProfileCard = ({ userId }: { userId: string }) => {
   const classes = useStyles()
+  const [user, error] = useUser(userId)
   const history = useHistory()
-  const [user, setUser] = useState<IUser>()
-  const fetchData = async () => {
-    try {
-      const result = await fetchUser(userId)
-      setUser(result)
-    } catch (e) {
-      history.push(`/404`)
-    }
-  }
   useEffect(() => {
-    fetchData()
-    // 本来は POSTリクエストが完了したら再度 fetchData() を実行したい。
-    // 違う userId が history に push された場合に再度 fetch されるようにしている。
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId])
+    if (error) {
+      history.push('/404')
+    }
+  }, [error, history])
 
   const auth = useSelector((state: any) => state.authenticatedUser)
   const isMe = auth.user.id === user?.id
@@ -97,9 +89,10 @@ const UserProfileCard = ({ userId }: { userId: string }) => {
       mode: 'onBlur',
       reValidateMode: 'onChange',
     })
+    const dispatch = useDispatch()
+
     const saveUser = (user: IUser) => {
-      console.log(user)
-      setUser(user)
+      dispatch(thunkedUpdateUserAction(user))
       setEditable(!editable)
     }
 

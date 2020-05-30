@@ -1,10 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { combineReducers } from 'redux'
-import auth from './authenticate'
+import auth, { IAuthState } from './authenticate'
+import users, { IUserState } from './users'
 import thunk from 'redux-thunk'
 
+export interface AppState {
+  authenticatedUser: IAuthState
+  users: IUserState[]
+}
 const reducer = combineReducers({
   authenticatedUser: auth,
+  users,
 })
 
 /**

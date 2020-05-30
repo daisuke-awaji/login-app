@@ -27,14 +27,15 @@ const requestLoginAction = () => {
 }
 
 export const thunkedLoginAction = ({ email, password }: any) => {
-  requestLoginAction()
   return async (dispatch: any) => {
-    try {
-      const user = await login({ email, password })
-      return dispatch(loginSucceedAction(user))
-    } catch (error) {
-      return dispatch(loginFailedAction(error))
-    }
+    dispatch(requestLoginAction())
+    login({ email, password })
+      .then((user) => {
+        dispatch(loginSucceedAction(user))
+      })
+      .catch((error) => {
+        dispatch(loginFailedAction(error))
+      })
   }
 }
 
@@ -42,37 +43,38 @@ export const logoutAction = (): IAuthenticateAction => {
   return { type: LoginActionType.LOGOUT, user: null, error: null }
 }
 
-const isFetching = (action: IAuthenticateAction) => {
-  switch (action.type) {
-    case LoginActionType.REQUEST_LOGIN:
-      return true
-    default:
-      return false
-  }
-}
-
-interface IState {
+export interface IAuthState {
   isFetching: boolean
   user: IUser | null
   error: any | null
 }
 
 const initialState = { isFetching: false, user: null, error: null }
-const auth = (state: IState = initialState, action: IAuthenticateAction) => {
+const auth = (
+  state: IAuthState = initialState,
+  action: IAuthenticateAction,
+): IAuthState => {
   switch (action.type) {
+    case LoginActionType.REQUEST_LOGIN:
+      return {
+        ...state,
+        isFetching: true,
+        user: action.user,
+        error: action.error,
+      }
     case LoginActionType.LOGIN_SUCCEED:
       // TODO: サーバサイドでcookieにセットする方法に切り替える
       localStorage.setItem('sessionId', '1')
       return {
         ...state,
-        isFetching: isFetching(action),
+        isFetching: false,
         user: action.user,
         error: action.error,
       }
     case LoginActionType.LOGIN_FAILED:
       return {
         ...state,
-        isFetching: isFetching(action),
+        isFetching: false,
         user: action.user,
         error: action.error,
       }
@@ -81,7 +83,7 @@ const auth = (state: IState = initialState, action: IAuthenticateAction) => {
       localStorage.setItem('sessionId', '0')
       return {
         ...state,
-        isFetching: isFetching(action),
+        isFetching: false,
         user: null,
         error: null,
       }

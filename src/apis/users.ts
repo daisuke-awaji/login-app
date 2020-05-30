@@ -2,7 +2,7 @@ import { IUser } from 'components/users/IUser'
 import { sleep } from './utils'
 
 // mock
-export const users: IUser[] = [
+export let users: IUser[] = [
   {
     id: '0342a27b-e1f8-456b-8bc8-8e7cff1f4d9a',
     name: 'janedoe_',
@@ -23,10 +23,13 @@ export const users: IUser[] = [
   },
   {
     id: 'b1a79255-caf8-4bd2-b238-c784454fb5b0',
-    name: 'c',
+    name: 'snowman',
     email: 'userc@email.com',
     type: 'default',
-    img: '',
+    description:
+      'longtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtextlongtext',
+    img:
+      'https://pbs.twimg.com/profile_images/995611723850645504/BIjprphs_400x400.jpg',
   },
   {
     id: 'b56695d9-2e89-4a0a-9434-ebfac97bc778',
@@ -63,7 +66,7 @@ export const fetchUser = async (userId: string): Promise<IUser> => {
   return new Promise<IUser>((resolve, reject) => {
     const one = users.find((user) => user.id === userId)
     if (!one) {
-      reject('error')
+      reject('user not found')
     }
     resolve(one)
   })
@@ -72,5 +75,18 @@ export const fetchUser = async (userId: string): Promise<IUser> => {
 export const fetchUsers = (): Promise<IUser[]> => {
   return new Promise((resolve) => {
     resolve(users)
+  })
+}
+
+export const updateUser = async (updateUser: IUser): Promise<IUser> => {
+  await sleep(1000)
+  return new Promise<IUser>((resolve, reject) => {
+    users.forEach((user, index) => {
+      if (user.id === updateUser.id) {
+        users.splice(index, 1, updateUser)
+        resolve(updateUser)
+      }
+    })
+    reject('user not found')
   })
 }
