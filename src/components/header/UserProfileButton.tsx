@@ -23,7 +23,11 @@ export const UserProfileButton = () => {
   const title = `User Profile: ${user?.name}`
   return (
     <Tooltip title={title}>
-      <IconButton color="inherit" onClick={handleClick}>
+      <IconButton
+        data-test="profileButton"
+        color="inherit"
+        onClick={handleClick}
+      >
         <Avatar
           alt={user?.name + 'ProfileImage'}
           src={user?.img}

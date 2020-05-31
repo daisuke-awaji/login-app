@@ -12,9 +12,13 @@ export const UserProfileTexts: React.FunctionComponent<{
   const EditButton = () => {
     // コンポーネントのレンダーを防ぐには null を返す。undefinedではダメ。
     // https://ja.reactjs.org/docs/conditional-rendering.html#preventing-component-from-rendering
-    if (isMe) return null
+    if (!isMe) return null
     return (
-      <Button onClick={() => setEditable(true)} color="primary">
+      <Button
+        data-test="profileEditButton"
+        onClick={() => setEditable(true)}
+        color="primary"
+      >
         Edit
       </Button>
     )

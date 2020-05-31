@@ -19,17 +19,25 @@ export const EditUserProfileForm: React.FunctionComponent<{
     setEditable(false)
   }
   const SaveButton = () => (
-    <Button onClick={handleSubmit(saveUser)} color="secondary">
+    <Button
+      data-test="profileSaveButton"
+      onClick={handleSubmit(saveUser)}
+      color="secondary"
+    >
       Save
     </Button>
   )
   const CancelButton = () => (
-    <Button onClick={() => setEditable(false)} color="default">
+    <Button
+      data-test="profileCancelButton"
+      onClick={() => setEditable(false)}
+      color="default"
+    >
       Cancel
     </Button>
   )
   return (
-    <form>
+    <form id="userProfileEditForm">
       <input ref={register} type="hidden" name="id" value={user?.id} />
       <Controller
         as={
