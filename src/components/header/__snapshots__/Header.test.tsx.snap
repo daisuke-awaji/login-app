@@ -159,7 +159,7 @@ exports[`スナップショット レンダリングができること 1`] = `
           className="MuiIconButton-label"
         >
           <div
-            className="MuiAvatar-root MuiAvatar-circle makeStyles-img-109 MuiAvatar-colorDefault"
+            className="MuiAvatar-root MuiAvatar-circle makeStyles-img-4 MuiAvatar-colorDefault"
           >
             <svg
               aria-hidden={true}
