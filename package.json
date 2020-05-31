@@ -28,7 +28,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:updateSnapshot": "jest --updateSnapshot --testPathIgnorePatterns cypress",
     "cy:run": "cypress run",
     "cy:run:chrome": "cypress run --browser chrome",
     "cy:run:firefox": "cypress run --browser firefox",
