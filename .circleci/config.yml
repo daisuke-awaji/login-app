@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  cypress: cypress-io/cypress@1
 jobs:
   build-and-test:
     executor: 'node/default'
@@ -15,3 +16,8 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test
+      - cypress/run:
+          yarn: true
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+          no-workspace: true
