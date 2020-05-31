@@ -25,7 +25,7 @@ Array [
         >
           <th
             aria-sort={null}
-            className="MuiTableCell-root MuiTableCell-head WithStyles(ForwardRef(TableCell))-head-69 MuiTableCell-alignRight"
+            className="MuiTableCell-root MuiTableCell-head WithStyles(ForwardRef(TableCell))-head-2 MuiTableCell-alignRight"
             scope="col"
             style={
               Object {
@@ -37,7 +37,7 @@ Array [
           </th>
           <th
             aria-sort={null}
-            className="MuiTableCell-root MuiTableCell-head WithStyles(ForwardRef(TableCell))-head-69 MuiTableCell-alignRight"
+            className="MuiTableCell-root MuiTableCell-head WithStyles(ForwardRef(TableCell))-head-2 MuiTableCell-alignRight"
             scope="col"
             style={
               Object {
@@ -49,7 +49,7 @@ Array [
           </th>
           <th
             aria-sort={null}
-            className="MuiTableCell-root MuiTableCell-head WithStyles(ForwardRef(TableCell))-head-69 MuiTableCell-alignRight"
+            className="MuiTableCell-root MuiTableCell-head WithStyles(ForwardRef(TableCell))-head-2 MuiTableCell-alignRight"
             scope="col"
             style={
               Object {
@@ -61,7 +61,7 @@ Array [
           </th>
           <th
             aria-sort={null}
-            className="MuiTableCell-root MuiTableCell-head WithStyles(ForwardRef(TableCell))-head-69 MuiTableCell-alignRight"
+            className="MuiTableCell-root MuiTableCell-head WithStyles(ForwardRef(TableCell))-head-2 MuiTableCell-alignRight"
             scope="col"
             style={
               Object {
@@ -173,7 +173,7 @@ Array [
                 0-0 of 0
               </p>
               <div
-                className="makeStyles-root-136"
+                className="makeStyles-root-4"
               >
                 <button
                   aria-label="first page |<"

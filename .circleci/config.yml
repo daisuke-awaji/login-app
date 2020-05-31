@@ -1,17 +1,31 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  # To use CircleCI orbs, need to enable two settings.
+  # - Settings -> Security -> Allow uncertified orbs
+  # - Settings -> Advanced Settings -> Enable pipelines
+  # https://github.com/cypress-io/circleci-orb#how-to-enable
+  # https://circleci.com/orbs/registry/orb/cypress-io/cypress
+  cypress: cypress-io/cypress@1
 jobs:
-  build-and-test:
-    executor:
-      name: node/default
+  unittest:
+    executor: 'node/default'
     steps:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install
-            - run: npm test
+            - run: yarn install
+            - run: yarn test
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test:
+    jobs:
+      - unittest
+      - cypress/run:
+          yarn: true
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+          no-workspace: true
+          # record: true # # record results to Cypress Dashboard
+          # parallel: true # run tests in parallel
+          # parallelism: 3 # use 3 CircleCI machines
+          # group: 3 machines # name this group "3 machines"
