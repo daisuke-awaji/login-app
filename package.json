@@ -33,6 +33,13 @@
     "cy:run:chrome": "cypress run --browser chrome",
     "cy:run:firefox": "cypress run --browser firefox",
     "cy:open": "cypress open",
+    "cy:install": "cypress install",
+    "cy:verify": "cypress verify",
+    "cy:info": "cypress info",
+    "cy:version": "cypress version",
+    "cy:cache:list": "cypress cache list",
+    "cy:run:record": "cypress run --record",
+    "ci:cy:run": "start-server-and-test start http://localhost:3000 cy:run",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -83,6 +90,7 @@
     "jest-canvas-mock": "^2.2.0",
     "jest-enzyme": "^7.1.2",
     "lint-staged": "^10.2.2",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "start-server-and-test": "^1.11.0"
   }
 }
