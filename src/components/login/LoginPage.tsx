@@ -56,8 +56,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Loading = () => <>Loading...</>
-
 export function LoginPage() {
   const classes = useStyles()
 
@@ -96,9 +94,6 @@ export function LoginPage() {
       )
     }
   })
-  if (auth.isFetching) {
-    return <Loading />
-  }
 
   return (
     <>
