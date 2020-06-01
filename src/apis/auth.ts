@@ -3,7 +3,7 @@ import { users } from 'apis/users'
 import { sleep } from './utils'
 
 export async function login({ email, password }: any): Promise<IUser> {
-  await sleep(2500)
+  await sleep(500)
   return new Promise((resolve, reject) => {
     if (email === 'usera@email.com' && password === 'a') {
       resolve(users[0])
