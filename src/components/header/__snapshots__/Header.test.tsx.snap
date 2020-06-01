@@ -137,6 +137,7 @@ exports[`スナップショット レンダリングができること 1`] = `
       <button
         aria-describedby={null}
         className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
+        data-test="profileButton"
         disabled={false}
         onBlur={[Function]}
         onClick={[Function]}
