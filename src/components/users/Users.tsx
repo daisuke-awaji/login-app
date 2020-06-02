@@ -43,6 +43,7 @@ const Users = () => {
   const classes = useStyles()
   const [users, setUsers] = useState<IUser[]>([])
 
+  // TODO: Reduxに押しやる
   const fetchData = async () => {
     const users = await fetchUsers()
     setUsers(users)
@@ -51,6 +52,7 @@ const Users = () => {
     fetchData()
   }, [])
 
+  // TODO: カスタムHookとか使ってコンポーネントを小さな単位に分割したい
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
 
@@ -82,7 +84,7 @@ const Users = () => {
         <Table className={classes.table} aria-label="user table">
           <TableHead>
             <TableRow>
-              <StyledTableCell style={{ width: '10%' }} align="right">
+              <StyledTableCell style={{ width: '30%' }} align="right">
                 Id
               </StyledTableCell>
               <StyledTableCell style={{ width: '30%' }} align="right">
@@ -99,15 +101,20 @@ const Users = () => {
           <TableBody>
             {usersInPage.map((user, key) => (
               <TableRow key={key}>
-                <StyledTableCell style={{ width: '10%' }} align="right">
-                  {user.id}
-                </StyledTableCell>
-                <StyledTableCell style={{ width: '30%' }} align="right">
+                <StyledTableCell align="right">{user.id}</StyledTableCell>
+                <StyledTableCell
+                  style={{
+                    maxWidth: '100px',
+                    // textOverflow: 'ellipsis', // はみ出たテキストを切り取って ... を表示する
+                    whiteSpace: 'nowrap',
+                    overflow: 'scroll',
+                  }}
+                  align="right"
+                >
                   <Link to={'/users/' + user.id}>{user.name}</Link>
                 </StyledTableCell>
                 <StyledTableCell
                   style={{
-                    width: '40%',
                     maxWidth: '100px',
                     // textOverflow: 'ellipsis', // はみ出たテキストを切り取って ... を表示する
                     whiteSpace: 'nowrap',
@@ -117,9 +124,7 @@ const Users = () => {
                 >
                   {user.email}
                 </StyledTableCell>
-                <StyledTableCell style={{ width: '10%' }} align="right">
-                  {user.type}
-                </StyledTableCell>
+                <StyledTableCell align="right">{user.type}</StyledTableCell>
               </TableRow>
             ))}
             {/* 最終ページだけ余白を用意する */}
